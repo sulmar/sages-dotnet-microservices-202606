@@ -1,0 +1,33 @@
+@using BlazorApp.Model
+
+<div class="d-flex justify-content-between align-items-start gap-2 py-2 border-bottom">
+    <div class="flex-grow-1 min-w-0">
+        <div class="fw-semibold">@(Product?.Name ?? $"Produkt #{Line.ProductId}")</div>
+        <div class="text-muted">@Line.Quantity × @UnitPrice.ToString("C")</div>
+    </div>
+    <div class="d-flex align-items-center gap-2 flex-shrink-0">
+        <div class="text-nowrap fw-semibold">@LineTotal.ToString("C")</div>
+        <button type="button"
+                class="btn btn-sm btn-outline-danger"
+                title="Usuń z koszyka"
+                @onclick="() => OnRemove.InvokeAsync(Line.ProductId)"
+                @onclick:stopPropagation="true">
+            <i class="bi-trash"></i>
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired]
+    public Model.CartItem Line { get; set; } = null!;
+
+    [Parameter]
+    public Product? Product { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnRemove { get; set; }
+
+    private decimal UnitPrice => Product?.DiscountedPrice ?? 0m;
+
+    private decimal LineTotal => UnitPrice * Line.Quantity;
+}
