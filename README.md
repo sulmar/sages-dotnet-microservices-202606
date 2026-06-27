@@ -27,7 +27,7 @@ Do rozpoczęcia tego kursu potrzebujesz następujących rzeczy:
 ## Przygotowanie
 1. Sklonuj repozytorium Git
 ```
-git clone https://github.com/sulmar/sages-dotnet-microservices-...
+git clone https://github.com/sulmar/sages-dotnet-microservices-202606
 ```
 2. Zbuduj
 ```
