@@ -11,4 +11,11 @@
     <Project Path="MicroServices/ProductCatalog/src/ProductCatalog.Domain/ProductCatalog.Domain.csproj" />
     <Project Path="MicroServices/ProductCatalog/src/ProductCatalog.Infrastructure/ProductCatalog.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/MicroServices/ShoppingCart/" />
+  <Folder Name="/MicroServices/ShoppingCart/src/">
+    <Project Path="MicroServices/ShoppingCart/src/ShoppingCart.Api/ShoppingCart.Api.csproj" />
+    <Project Path="MicroServices/ShoppingCart/src/ShoppingCart.Application/ShoppingCart.Application.csproj" />
+    <Project Path="MicroServices/ShoppingCart/src/ShoppingCart.Domain/ShoppingCart.Domain.csproj" />
+    <Project Path="MicroServices/ShoppingCart/src/ShoppingCart.Infrastructure/ShoppingCart.Infrastructure.csproj" />
+  </Folder>
 </Solution>
