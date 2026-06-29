@@ -61,7 +61,7 @@
     {
         Cart.CartChanged += OnCartChanged;
         catalog = await ProductService.GetAllAsync();
-        await RefreshCartAsync();
+      //  await RefreshCartAsync();
     }
 
     private void OnCartChanged()
@@ -74,7 +74,7 @@
     }
 
     private async Task RefreshCartAsync()
-    {
+    {        
         cartItems = await Cart.GetCartItemsAsync() ?? [];
     }
 
