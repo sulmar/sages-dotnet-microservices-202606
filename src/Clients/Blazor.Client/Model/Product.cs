@@ -8,6 +8,12 @@ public class Product
     public decimal DiscountedPrice  { get; set; }
     public bool IsSale => Price > DiscountedPrice;
 
+
+    public Product()
+    {
+        
+    }
+
     public Product(int id, string name, decimal price, decimal? discountedPrice = null)
     {
         Id = id;
