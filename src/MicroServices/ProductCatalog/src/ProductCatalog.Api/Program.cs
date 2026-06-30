@@ -1,3 +1,4 @@
+using ProductCatalog.Api;
 using ProductCatalog.Api.Features.GetProducts;
 using ProductCatalog.Application;
 using ProductCatalog.Infrastructure;
@@ -5,9 +6,12 @@ using ProductCatalog.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddAplication();
-builder.Services.AddInfrastructure();
+builder.Services.AddInfrastructure(builder.Configuration);
 
 var app = builder.Build();
+
+await app.InitializeDatabaseAsync();
+
 
 app.Use(async (context, next) =>
 {
