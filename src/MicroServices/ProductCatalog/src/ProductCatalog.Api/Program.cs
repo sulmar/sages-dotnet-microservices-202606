@@ -19,7 +19,7 @@ builder.Services.AddInfrastructure();
 
 var app = builder.Build();
 
-app.UseCors("Read");
+// app.UseCors("Read");
 
 app.MapGet("/", () => "Hello Product Catalog Api!");
 app.MapGetProducts();
