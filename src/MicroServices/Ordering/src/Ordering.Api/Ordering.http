@@ -1,0 +1,18 @@
+
+
+POST https://localhost:7041/api/orders 
+Content-Type: application/json
+
+{
+  "lines":
+  [
+    {
+      "ProductId": 1,
+      "Quantity": 2
+    },
+    {
+      "ProductId": 2,
+      "Quantity": 1
+    }
+  ]
+}

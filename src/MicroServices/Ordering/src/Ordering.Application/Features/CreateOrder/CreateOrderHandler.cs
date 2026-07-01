@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Ordering.Application.Features.CreateOrder;
+﻿namespace Ordering.Application.Features.CreateOrder;
 
 public class CreateOrderHandler
 {
-    public Task HandleAsync()
+    public Task HandleAsync(CreateOrderRequest request)
     {
         throw new NotImplementedException();
     }
