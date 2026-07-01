@@ -16,3 +16,18 @@ Content-Type: application/json
     }
   ]
 }
+
+### ProductOutOfStockException
+
+POST https://localhost:7041/api/orders 
+Content-Type: application/json
+
+{
+  "lines":
+  [
+    {
+      "ProductId": 21,
+      "Quantity": 999
+    }
+  ]
+}
