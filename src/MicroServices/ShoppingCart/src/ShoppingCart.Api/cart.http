@@ -21,3 +21,8 @@ Content-Type: application/json
 
 
 ###
+
+POST {{host}}/api/cart/checkout HTTP/1.1
+
+
+###

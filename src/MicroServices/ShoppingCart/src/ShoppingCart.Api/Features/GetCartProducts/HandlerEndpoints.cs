@@ -1,4 +1,5 @@
 ﻿using ShoppingCart.Api.Features.AddProductToCart;
+using ShoppingCart.Api.Features.Checkout;
 
 namespace ShoppingCart.Api.Features.GetCartProducts;
 
@@ -8,6 +9,7 @@ public static class HandlerEndpoints
     {
         app.MapAddProductToCartEndpoint();
         app.MapGetCartProductsHandlerEndpoint();
+        app.MapCheckountEndpoint();
 
         return app;
     }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ShoppingCart.Application.Features.AddProductToCart;
+using ShoppingCart.Application.Features.Checkout;
 using ShoppingCart.Application.Features.GetCartProducts;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ public static class DependencyInjection
     {
         services.AddScoped<AddProductToCartHandler>();
         services.AddScoped<GetCartProductHandler>();
+        services.AddScoped<CheckoutHandler>();
 
         return services;
     }

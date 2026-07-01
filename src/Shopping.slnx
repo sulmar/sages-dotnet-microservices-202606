@@ -8,6 +8,13 @@
     <Project Path="Clients/Blazor.Client/BlazorApp.csproj" />
   </Folder>
   <Folder Name="/MicroServices/" />
+  <Folder Name="/MicroServices/Ordering/" />
+  <Folder Name="/MicroServices/Ordering/src/">
+    <Project Path="MicroServices/Ordering/src/Ordering.Api/Ordering.Api.csproj" />
+    <Project Path="MicroServices/Ordering/src/Ordering.Application/Ordering.Application.csproj" />
+    <Project Path="MicroServices/Ordering/src/Ordering.Domain/Ordering.Domain.csproj" />
+    <Project Path="MicroServices/Ordering/src/Ordering.Infrastructure/Ordering.Infrastructure.csproj" />
+  </Folder>
   <Folder Name="/MicroServices/ProductCatalog/" />
   <Folder Name="/MicroServices/ProductCatalog/src/">
     <Project Path="MicroServices/ProductCatalog/src/ProductCatalog.Api/ProductCatalog.Api.csproj" />
