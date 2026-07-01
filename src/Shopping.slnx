@@ -29,4 +29,8 @@
     <Project Path="MicroServices/ShoppingCart/src/ShoppingCart.Domain/ShoppingCart.Domain.csproj" />
     <Project Path="MicroServices/ShoppingCart/src/ShoppingCart.Infrastructure/ShoppingCart.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/MicroServices/Stock/" />
+  <Folder Name="/MicroServices/Stock/src/">
+    <Project Path="MicroServices/Stock/src/Stock.GrpcService/Stock.GrpcService.csproj" />
+  </Folder>
 </Solution>
