@@ -14,6 +14,7 @@ public static class DependencyInjection
         });
 
         services.AddScoped<IStockClient, GrpcStockClient>();
+        services.AddScoped<IOrderEventPublisher, RedisOrderEventPublisher>();
 
         return services;
     }
