@@ -31,3 +31,28 @@ Content-Type: application/json
     }
   ]
 }
+
+
+### Empty Lines
+POST https://localhost:7041/api/orders 
+Content-Type: application/json
+
+{
+  "lines": [ ]
+}
+
+
+
+### Bad Product Id and Quantity
+POST https://localhost:7041/api/orders 
+Content-Type: application/json
+
+{
+  "lines":
+  [
+    {
+      "ProductId": 0,
+      "Quantity": -1
+    }
+  ]
+}

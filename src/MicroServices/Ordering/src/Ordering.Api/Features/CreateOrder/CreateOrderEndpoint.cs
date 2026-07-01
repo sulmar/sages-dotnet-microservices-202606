@@ -1,4 +1,5 @@
-﻿using Ordering.Application.Features.CreateOrder;
+﻿using FluentValidation;
+using Ordering.Application.Features.CreateOrder;
 using Ordering.Domain.Exceptions;
 
 namespace Ordering.Api.Features.CreateOrder;
@@ -15,6 +16,15 @@ public static class CreateOrderEndpoint
 
                 return Results.Ok();
             }
+            catch(ValidationException ex)
+            {
+                return Results.ValidationProblem(ex.Errors
+                    .GroupBy(e=>e.PropertyName)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.ErrorMessage).ToArray())
+                    );
+            }
             catch (ProductOutOfStockException ex)
             {
                 return Results.Problem(
@@ -24,6 +34,7 @@ public static class CreateOrderEndpoint
                     statusCode: StatusCodes.Status409Conflict
                 );
             }
+            
         });
 
 
