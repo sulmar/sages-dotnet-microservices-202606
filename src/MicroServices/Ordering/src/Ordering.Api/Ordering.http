@@ -8,7 +8,7 @@ Content-Type: application/json
   [
     {
       "ProductId": 1,
-      "Quantity": 2
+      "Quantity": 3
     },
     {
       "ProductId": 2,

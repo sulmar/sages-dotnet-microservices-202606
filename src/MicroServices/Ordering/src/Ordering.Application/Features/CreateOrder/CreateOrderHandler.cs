@@ -25,7 +25,7 @@ public class CreateOrderHandler(IStockClient stockClient, IValidator<CreateOrder
             // TODO: Publish OrderPlaced event
             var @event = new OrderPlacedEvent(
                 Guid.NewGuid().ToString(), 
-                DateTime.UtcNow, 
+                DateTime.UtcNow,                 
                 request.Lines.Select(l => new OrderPlacedLine(l.ProductId, l.Quantity)).ToList());
         
             await publisher.PublishOrderPlacedAsync(@event);

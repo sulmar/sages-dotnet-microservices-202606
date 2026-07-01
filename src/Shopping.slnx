@@ -15,6 +15,10 @@
     <Project Path="MicroServices/Ordering/src/Ordering.Domain/Ordering.Domain.csproj" />
     <Project Path="MicroServices/Ordering/src/Ordering.Infrastructure/Ordering.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/MicroServices/Payment/" />
+  <Folder Name="/MicroServices/Payment/src/">
+    <Project Path="MicroServices/Payment/src/Payment.Worker/Payment.Worker.csproj" />
+  </Folder>
   <Folder Name="/MicroServices/ProductCatalog/" />
   <Folder Name="/MicroServices/ProductCatalog/src/">
     <Project Path="MicroServices/ProductCatalog/src/ProductCatalog.Api/ProductCatalog.Api.csproj" />
