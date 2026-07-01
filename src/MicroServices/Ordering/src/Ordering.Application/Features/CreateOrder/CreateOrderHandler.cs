@@ -1,9 +1,24 @@
-﻿namespace Ordering.Application.Features.CreateOrder;
+﻿using Ordering.Application.Abstractions;
 
-public class CreateOrderHandler
+namespace Ordering.Application.Features.CreateOrder;
+
+public class CreateOrderHandler(IStockClient stockClient)
 {
-    public Task HandleAsync(CreateOrderRequest request)
+    public async Task HandleAsync(CreateOrderRequest request)
     {
-        throw new NotImplementedException();
+        foreach (var item in request.Lines)
+        {
+            var result = await stockClient.CheckAvailabilityAsync(item.ProductId, item.Quantity);
+
+            if (result)
+            {
+                // Proceed with order creation logic
+            }
+            else
+            {
+                // Handle out-of-stock scenario
+                throw new InvalidOperationException($"Product {item.ProductId} is out of stock.");
+            }
+        }                
     }
 }
