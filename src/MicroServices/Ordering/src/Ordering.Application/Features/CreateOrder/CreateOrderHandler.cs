@@ -8,17 +8,14 @@ public class CreateOrderHandler(IStockClient stockClient)
     {
         foreach (var item in request.Lines)
         {
-            var result = await stockClient.CheckAvailabilityAsync(item.ProductId, item.Quantity);
+            bool available = await stockClient.CheckAvailabilityAsync(item.ProductId, item.Quantity);
 
-            if (result)
-            {
-                // Proceed with order creation logic
-            }
-            else
-            {
-                // Handle out-of-stock scenario
+            if (!available)            
                 throw new InvalidOperationException($"Product {item.ProductId} is out of stock.");
-            }
-        }                
+            
+            // TODO: Save order
+
+            // TODO: Publish OrderCreated event
+        }
     }
 }

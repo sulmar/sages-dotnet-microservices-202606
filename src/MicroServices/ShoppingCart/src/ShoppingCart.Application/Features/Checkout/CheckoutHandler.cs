@@ -13,11 +13,9 @@ public class CheckoutHandler(ICartRepository repository, IOrderingClient orderin
         var lines = items.Select(i => new OrderLineRequest(i.ProductId, i.Quantity)).ToList();
 
         var orderRequest = new CreateOrderRequest(lines);
-
-        // TODO: wyslij zamowienie do OrderingService
+        
         await orderingClient.CreateOrderAsync(orderRequest);
 
-
-        throw new NotImplementedException();
+        // TODO: wyczysc koszyk po zlozeniu zamowienia
     }
 }
