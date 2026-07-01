@@ -15,6 +15,13 @@ public static class DependencyInjection
         services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(redisConnectionString));
         services.AddSingleton<ICartRepository, RedisCartRepository>();
 
+        services.AddHttpClient("OrderingApi", (sp, client) =>
+        {
+            client.BaseAddress = new Uri(configuration.GetValue<string>("OrderingApi:BaseUrl") ?? "http://localhost:5000");
+        });
+
+        services.AddScoped<IOrderingClient, ApiOrderingClient>();
+
         return services;
     }
 }

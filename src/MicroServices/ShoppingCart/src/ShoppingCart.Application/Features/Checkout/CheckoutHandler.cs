@@ -2,7 +2,7 @@
 
 namespace ShoppingCart.Application.Features.Checkout;
 
-public class CheckoutHandler(ICartRepository repository)
+public class CheckoutHandler(ICartRepository repository, IOrderingClient orderingClient)
 {
     public async Task HandleAsync()
     {
@@ -12,9 +12,10 @@ public class CheckoutHandler(ICartRepository repository)
 
         var lines = items.Select(i => new OrderLineRequest(i.ProductId, i.Quantity)).ToList();
 
-        var orderRequest = new OrderRequest(lines);
+        var orderRequest = new CreateOrderRequest(lines);
 
         // TODO: wyslij zamowienie do OrderingService
+        await orderingClient.CreateOrderAsync(orderRequest);
 
 
         throw new NotImplementedException();

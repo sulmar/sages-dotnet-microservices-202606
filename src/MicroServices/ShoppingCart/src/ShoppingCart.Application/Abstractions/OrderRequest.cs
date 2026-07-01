@@ -1,3 +1,3 @@
 ﻿namespace ShoppingCart.Application.Abstractions;
 
-public record OrderRequest(List<OrderLineRequest> Lines);
+public record CreateOrderRequest(List<OrderLineRequest> Lines);
