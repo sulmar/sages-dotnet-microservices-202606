@@ -15,36 +15,16 @@ public class StockGrpcService : Stock.GrpcService.StockService.StockServiceBase
     };
 
     public override Task<CheckAvailabilityResponse> CheckAvailability(CheckAvailabilityRequest request, ServerCallContext context)
-    {
+    {      
+        var isAvailable = stock.TryGetValue(request.ProductId, out var availableQuantity) && availableQuantity >= request.Quantity;
+
         var response = new CheckAvailabilityResponse
         {
-            IsAvailable = true,
-            Status = StockStatus.InStock
+            IsAvailable = isAvailable,
+            Status = isAvailable ? StockStatus.InStock : StockStatus.OutOfStock
         };
 
-        return Task.FromResult(response);
-
-        //if (stock.ContainsKey(request.ProductId) && stock[request.ProductId] >= request.Quantity)
-        //{
-        //    var response = new CheckAvailabilityResponse
-        //    {
-        //        IsAvailable = true,
-        //        Status = StockStatus.InStock
-        //    };
-
-        //    return Task.FromResult(response);
-        //}
-
-        //else
-        //{
-        //    var response = new CheckAvailabilityResponse
-        //    {
-        //        IsAvailable = false,
-        //        Status = StockStatus.OutOfStock
-        //    };
-
-        //    return Task.FromResult(response);
-        //}
+        return Task.FromResult(response);       
     }
 
         
