@@ -38,6 +38,10 @@ dotnet build src/Clients/Blazor.Client/BlazorApp.csproj
 
 Lista przypadków użycia znajduje się w [docs/use-cases](docs/use-cases/README.md).
 
+## Ściągi
+
+- [dotnet CLI](docs/dotnet-cli-cheatsheet.md) - tworzenie projektów, solution, referencji i pakietów.
+
 ## Moduły szkolenia
 
 - Moduł 1: Starter Blazor i katalog produktów (`UC-01`, `UC-02`, `UC-03`) - HTTP REST API.
