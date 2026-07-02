@@ -73,7 +73,7 @@ sages-dotnet-microservices-202606/
 
 | Usługa | Projekt | Odpowiedzialność |
 |--------|---------|------------------|
-| API Gateway | `ManualApiGateway`, `YarpApiGateway` | Punkt wejścia dla klienta, routowanie żądań do usług backendowych, opcjonalna agregacja odpowiedzi. |
+| API Gateway | `YarpApiGateway` | Punkt wejścia dla klienta, routowanie żądań do usług backendowych, opcjonalna agregacja odpowiedzi. |
 | Identity Provider | `IdentityProvider.Api` | Uwierzytelnianie użytkowników, wystawianie tokenów JWT i obsługa scenariuszy autoryzacji. |
 | Product Catalog | `ProductCatalog.Api` | Udostępnianie katalogu produktów, szczegółów produktów oraz danych potrzebnych do wyliczania cen. |
 | Shopping Cart | `ShoppingCart.Api` | Zarządzanie koszykiem użytkownika, pozycjami koszyka i ilościami produktów. |
@@ -81,6 +81,46 @@ sages-dotnet-microservices-202606/
 | Stock | `Stock.GrpcService` | Sprawdzanie dostępności produktów oraz rezerwacja stanów magazynowych przez gRPC. |
 | Payment | `Payment.Worker` | Asynchroniczne przetwarzanie płatności i zwrotów na podstawie zdarzeń. |
 | Blazor Client | `BlazorApp` | Interfejs użytkownika komunikujący się z API Gateway i usługami backendowymi. |
+
+## Komunikacja między usługami
+
+```text
+BlazorApp
+  |
+  | HTTP REST
+  v
+YarpApiGateway
+  |
+  | HTTP REST
+  +--> ProductCatalog.Api
+  +--> ShoppingCart.Api
+  +--> Ordering.Api
+  +--> IdentityProvider.Api
+
+Ordering.Api
+  |
+  | gRPC
+  v
+Stock.GrpcService
+
+ShoppingCart.Api
+  |
+  | Redis Hash
+  v
+Redis
+
+Ordering.Api
+  |
+  | Redis Stream
+  v
+Payment.Worker
+
+Payment.Worker
+  |
+  | Redis Stream
+  v
+Ordering.Api
+```
 
 ## Przygotowanie
 1. Sklonuj repozytorium Git
