@@ -18,7 +18,12 @@ public class CreateOrderHandler(IStockClient stockClient, IValidator<CreateOrder
             bool available = await stockClient.CheckAvailabilityAsync(item.ProductId, item.Quantity);
 
             if (!available)
-                throw new ProductOutOfStockException(item.ProductId);          
+                throw new ProductOutOfStockException(item.ProductId);
+
+            bool reserved = await stockClient.ReserveProductAsync(item.ProductId, item.Quantity);
+
+            if (!reserved)
+                throw new ProductNotReservedException(item.ProductId);
         }
 
         // TODO: Save order

@@ -17,4 +17,16 @@ public class GrpcStockClient(Stock.GrpcService.StockService.StockServiceClient c
 
         return response.IsAvailable;
     }
+
+    public async Task<bool> ReserveProductAsync(int productId, int quantity)
+    {
+        var request = new Stock.GrpcService.ReserveProductRequest
+        {
+            ProductId = productId,
+            Quantity = quantity
+        };
+        var response = await client.ReserveProductsAsync(request);
+
+        return response.Success;
+    }
 }

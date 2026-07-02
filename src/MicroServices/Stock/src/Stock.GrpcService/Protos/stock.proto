@@ -6,6 +6,17 @@ package stock;
 
 service StockService {
 	 rpc CheckAvailability(CheckAvailabilityRequest) returns (CheckAvailabilityResponse);
+	 rpc ReserveProducts(ReserveProductRequest) returns (ReserveProductsResponse);
+}
+
+message ReserveProductRequest {
+  int32 productId = 1;
+  int32 quantity = 2;
+}
+
+message ReserveProductsResponse {
+  bool success = 1;
+  string reservationId = 2;
 }
 
 message CheckAvailabilityRequest {

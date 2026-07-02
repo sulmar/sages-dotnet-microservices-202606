@@ -34,7 +34,17 @@ public static class CreateOrderEndpoint
                     statusCode: StatusCodes.Status409Conflict
                 );
             }
-            
+
+            catch (ProductNotReservedException ex)
+            {
+                return Results.Problem(
+                    type: "https://example.net/problems/product-not-reserved",
+                    title: "Product not reserved",
+                    detail: ex.Message,
+                    statusCode: StatusCodes.Status409Conflict
+                );
+            }
+
         });
 
 

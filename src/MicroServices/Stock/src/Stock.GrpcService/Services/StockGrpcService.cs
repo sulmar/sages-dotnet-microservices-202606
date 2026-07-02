@@ -27,5 +27,36 @@ public class StockGrpcService : Stock.GrpcService.StockService.StockServiceBase
         return Task.FromResult(response);       
     }
 
+    public override Task<ReserveProductsResponse> ReserveProducts(ReserveProductRequest request, ServerCallContext context)
+    {
+        if (!stock.TryGetValue(request.ProductId, out var available))
+        {
+            return Task.FromResult(new ReserveProductsResponse
+            {
+                Success = false,
+                ReservationId = ""
+            });
+        }
+
+        if (available < request.Quantity)
+        {
+            return Task.FromResult(new ReserveProductsResponse
+            {
+                Success = false,
+                ReservationId = ""
+            });
+        }
+
+        stock[request.ProductId] -= request.Quantity;
+
+
+        return Task.FromResult(new ReserveProductsResponse
+        {
+            Success = true,
+            ReservationId = Guid.NewGuid().ToString()
+        });
+    }
+    
+
         
 }
