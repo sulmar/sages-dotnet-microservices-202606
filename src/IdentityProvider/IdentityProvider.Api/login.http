@@ -1,0 +1,32 @@
+@host = https://localhost:7101
+
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+  "username": "john",
+  "password": "123"
+}
+
+### Invalid user name 
+
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+  "username": "bob",
+  "password": "123"
+}
+
+
+
+### Invalid password
+
+POST {{host}}/api/login
+Content-Type: application/json
+
+{
+  "username": "john",
+  "password": "invalid-password"
+}
+
