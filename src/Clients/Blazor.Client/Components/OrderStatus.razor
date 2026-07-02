@@ -1,7 +1,41 @@
-﻿<div class="alert alert-info" role="alert">
+﻿@using BlazorApp.Model
+@using Microsoft.AspNetCore.SignalR.Client
+@implements IAsyncDisposable
+@inject NavigationManager Navigation
+
+<div class="alert alert-info mb-0 py-2" role="alert">
     @Status
 </div>
 
 @code {
+    private HubConnection? _connection;
+
     private string Status = "Łączenie...";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _connection = new HubConnectionBuilder()
+            .WithUrl(Navigation.ToAbsoluteUri("/hubs/orders"))
+            .WithAutomaticReconnect()
+            .Build();
+
+        _connection.On<OrderStatusChanged>("OrderStatusChanged", message =>
+        {
+            Status = message.Status;
+
+            InvokeAsync(StateHasChanged);
+        });
+
+        await _connection.StartAsync();
+
+        Status = "Oczekiwanie na płatność...";
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_connection is not null)
+        {
+            await _connection.DisposeAsync();
+        }
+    }
 }

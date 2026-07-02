@@ -6,7 +6,7 @@ namespace Ordering.Application.Features.CreateOrder;
 
 public class CreateOrderHandler(IStockClient stockClient, IValidator<CreateOrderRequest> validator, IOrderEventPublisher publisher)
 {
-    public async Task HandleAsync(CreateOrderRequest request, string userId)
+    public async Task<string> HandleAsync(CreateOrderRequest request, string? userId)
     {
         var validationResult = await validator.ValidateAsync(request);
 
@@ -35,6 +35,8 @@ public class CreateOrderHandler(IStockClient stockClient, IValidator<CreateOrder
             request.Lines.Select(l => new OrderPlacedLine(l.ProductId, l.Quantity)).ToList());
 
         await publisher.PublishOrderPlacedAsync(@event);
+
+        return @event.OrderId;
     }
 }
 

@@ -1,4 +1,6 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.SignalR;
+using Ordering.Api.Hubs;
 using Ordering.Application.Features.CreateOrder;
 using Ordering.Domain.Exceptions;
 using System.Security.Claims;
@@ -9,13 +11,23 @@ public static class CreateOrderEndpoint
 {
     public static IEndpointRouteBuilder MapCreateOrderEndpoint(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("api/orders", async (CreateOrderRequest request, CreateOrderHandler handler, ClaimsPrincipal user) =>
+        endpoints.MapPost("api/orders", async (
+            CreateOrderRequest request,
+            CreateOrderHandler handler,
+            IHubContext<OrdersHub> hubContext,
+            ClaimsPrincipal user) =>
         {            
             var userId = user.FindFirstValue("sub");
 
             try
             {
-                await handler.HandleAsync(request, userId);
+                var orderId = await handler.HandleAsync(request, userId);
+
+                await hubContext.Clients.All.SendAsync(
+                    "OrderStatusChanged",
+                    new OrderStatusChanged(
+                        orderId,
+                        "Zamówienie opłacone"));
 
                 return Results.Ok();
             }
