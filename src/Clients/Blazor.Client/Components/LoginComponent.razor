@@ -1,43 +1,100 @@
 ﻿@using BlazorApp.Model
+@using BlazorApp.Services
 @inject HttpClient Http
+@inject IAuthTokenStore TokenStore
 
-<form class="d-flex align-items-center m-3" @onsubmit="HandleLogin">
-    <div class="me-2">
-        <input type="text" class="form-control" id="username" @bind="LoginModel.Username" placeholder="Enter username" required>
+@if (isLoggedIn)
+{
+    <div class="d-flex align-items-center m-3 gap-2">
+        <span class="text-success small">Zalogowano</span>
+        <button class="btn btn-outline-dark" type="button" @onclick="HandleLogout">
+            Logout
+        </button>
     </div>
-    <div class="me-2">
-        <input type="password" class="form-control" id="password" @bind="LoginModel.Password" placeholder="Enter password" required autocomplete="current-password">
-    </div>
-    <button class="btn btn-outline-dark" type="submit">
-        <i class="bi-person-fill me-1"></i>
-        Login
-    </button>
-</form>
+}
+else
+{
+    <form class="d-flex align-items-center m-3" @onsubmit="HandleLogin" @onsubmit:preventDefault="true">
+        <div class="me-2">
+            <input type="text" class="form-control" id="username" @bind="LoginModel.Username" placeholder="Enter username" required disabled="@loginInProgress">
+        </div>
+        <div class="me-2">
+            <input type="password" class="form-control" id="password" @bind="LoginModel.Password" placeholder="Enter password" required autocomplete="current-password" disabled="@loginInProgress">
+        </div>
+        <button class="btn btn-outline-dark" type="submit" disabled="@loginInProgress">
+            <i class="bi-person-fill me-1"></i>
+            Login
+        </button>
+        @if (!string.IsNullOrWhiteSpace(errorMessage))
+        {
+            <span class="text-danger small ms-2">@errorMessage</span>
+        }
+    </form>
+}
 
 
 
 @code {
 
     private LoginModel LoginModel = new();
+    private bool isLoggedIn;
+    private bool loginInProgress;
+    private string? errorMessage;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var token = await TokenStore.GetTokenAsync();
+        isLoggedIn = !string.IsNullOrWhiteSpace(token);
+    }
 
     private async Task HandleLogin()
     {
+        loginInProgress = true;
+        errorMessage = null;
 
-        Console.WriteLine($"Login attempt: Username: {LoginModel.Username} with password: {new string('*', LoginModel.Password?.Length ?? 0)}");
-
-        var response = await Http.PostAsJsonAsync<LoginModel>("api/login", LoginModel);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            string token = await response.Content.ReadAsStringAsync();
+            var response = await Http.PostAsJsonAsync("api/login", LoginModel);
 
-            Console.WriteLine(token);
-            // Handle successful login, e.g., navigate to another page
+            if (response.IsSuccessStatusCode)
+            {
+                var token = await ReadTokenAsync(response);
+                await TokenStore.SetTokenAsync(token);
+
+                LoginModel.Password = null;
+                isLoggedIn = true;
+            }
+            else
+            {
+                errorMessage = "Niepoprawny login lub hasło.";
+            }
         }
-        else
+        catch (Exception ex)
         {
-            // Handle login failure, e.g., show an error message
+            errorMessage = $"Błąd logowania: {ex.Message}";
+        }
+        finally
+        {
+            loginInProgress = false;
         }
     }
 
+    private async Task HandleLogout()
+    {
+        await TokenStore.ClearTokenAsync();
+        isLoggedIn = false;
+        errorMessage = null;
+    }
+
+    private static async Task<string> ReadTokenAsync(HttpResponseMessage response)
+    {
+        try
+        {
+            return await response.Content.ReadFromJsonAsync<string>() ?? string.Empty;
+        }
+        catch (System.Text.Json.JsonException)
+        {
+            return (await response.Content.ReadAsStringAsync()).Trim('"');
+        }
+    }
 }
