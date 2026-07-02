@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Ordering.Application.Features.CreateOrder;
 using Ordering.Domain.Exceptions;
+using System.Security.Claims;
 
 namespace Ordering.Api.Features.CreateOrder;
 
@@ -8,11 +9,13 @@ public static class CreateOrderEndpoint
 {
     public static IEndpointRouteBuilder MapCreateOrderEndpoint(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapPost("api/orders", async (CreateOrderRequest request, CreateOrderHandler handler) =>
-        {
+        endpoints.MapPost("api/orders", async (CreateOrderRequest request, CreateOrderHandler handler, ClaimsPrincipal user) =>
+        {            
+            var userId = user.FindFirstValue("sub");
+
             try
             {
-                await handler.HandleAsync(request);
+                await handler.HandleAsync(request, userId);
 
                 return Results.Ok();
             }

@@ -1,5 +1,5 @@
 @host = https://localhost:7001
-@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtaWNyb3NlcnZpY2VzIiwiaXNzIjoiaWRlbnRpdHktc2VydmljZSIsImV4cCI6MTc4MzAwMDg5OSwic3ViIjoiam9obiIsIm5hbWUiOiJqb2huIiwicGhvbmUiOiIrMTIzNDU2Nzg5MCIsImlhdCI6MTc4MzAwMDU5OSwibmJmIjoxNzgzMDAwNTk5fQ.uQ1gYdSSEQv5uqNH8Su0Kmbvh0RNbtbZE9CE6eroBNM
+@access_token = your_ascess_token
 
 POST {{host}}/api/orders 
 Content-Type: application/json

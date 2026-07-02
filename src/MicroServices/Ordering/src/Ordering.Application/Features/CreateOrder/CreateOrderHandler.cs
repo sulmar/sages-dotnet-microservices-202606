@@ -6,7 +6,7 @@ namespace Ordering.Application.Features.CreateOrder;
 
 public class CreateOrderHandler(IStockClient stockClient, IValidator<CreateOrderRequest> validator, IOrderEventPublisher publisher)
 {
-    public async Task HandleAsync(CreateOrderRequest request)
+    public async Task HandleAsync(CreateOrderRequest request, string userId)
     {
         var validationResult = await validator.ValidateAsync(request);
 
