@@ -18,18 +18,18 @@ public class CreateOrderHandler(IStockClient stockClient, IValidator<CreateOrder
             bool available = await stockClient.CheckAvailabilityAsync(item.ProductId, item.Quantity);
 
             if (!available)
-                throw new ProductOutOfStockException(item.ProductId);
-
-            // TODO: Save order
-
-            // TODO: Publish OrderPlaced event
-            var @event = new OrderPlacedEvent(
-                Guid.NewGuid().ToString(), 
-                DateTime.UtcNow,                 
-                request.Lines.Select(l => new OrderPlacedLine(l.ProductId, l.Quantity)).ToList());
-        
-            await publisher.PublishOrderPlacedAsync(@event);
+                throw new ProductOutOfStockException(item.ProductId);          
         }
+
+        // TODO: Save order
+
+        // TODO: Publish OrderPlaced event
+        var @event = new OrderPlacedEvent(
+            Guid.NewGuid().ToString(),
+            DateTime.UtcNow,
+            request.Lines.Select(l => new OrderPlacedLine(l.ProductId, l.Quantity)).ToList());
+
+        await publisher.PublishOrderPlacedAsync(@event);
     }
 }
 
