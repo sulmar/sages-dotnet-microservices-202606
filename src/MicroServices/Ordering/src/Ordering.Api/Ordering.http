@@ -1,7 +1,9 @@
+@host = https://localhost:7001
+@access_token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdWQiOiJtaWNyb3NlcnZpY2VzIiwiaXNzIjoiaWRlbnRpdHktc2VydmljZSIsImV4cCI6MTc4MzAwMDg5OSwic3ViIjoiam9obiIsIm5hbWUiOiJqb2huIiwicGhvbmUiOiIrMTIzNDU2Nzg5MCIsImlhdCI6MTc4MzAwMDU5OSwibmJmIjoxNzgzMDAwNTk5fQ.uQ1gYdSSEQv5uqNH8Su0Kmbvh0RNbtbZE9CE6eroBNM
 
-
-POST https://localhost:7041/api/orders 
+POST {{host}}/api/orders 
 Content-Type: application/json
+Authorization: Bearer {{access_token}}
 
 {
   "lines":
@@ -19,7 +21,7 @@ Content-Type: application/json
 
 ### ProductOutOfStockException
 
-POST https://localhost:7041/api/orders 
+POST {{host}}/api/orders 
 Content-Type: application/json
 
 {
@@ -34,7 +36,7 @@ Content-Type: application/json
 
 
 ### Empty Lines
-POST https://localhost:7041/api/orders 
+POST {{host}}/api/orders 
 Content-Type: application/json
 
 {
@@ -44,7 +46,7 @@ Content-Type: application/json
 
 
 ### Bad Product Id and Quantity
-POST https://localhost:7041/api/orders 
+POST {{host}}/api/orders 
 Content-Type: application/json
 
 {

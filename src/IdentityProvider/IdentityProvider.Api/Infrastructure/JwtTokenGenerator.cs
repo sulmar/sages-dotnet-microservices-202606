@@ -14,6 +14,7 @@ public class JwtTokenGenerator
     {
         var expiresAt = DateTime.UtcNow.AddMinutes(5);
 
+        // TODO: Przeniesc do pliku konfiguracyjnego 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("a-string-secret-at-least-256-bits-long"));
 
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -22,6 +23,7 @@ public class JwtTokenGenerator
         {
             ["sub"] = userId,
             ["name"] = username,
+            ["phone"] = "+1234567890", 
             ["exp"] = expiresAt.ToString("o")
         };
 
