@@ -27,7 +27,13 @@
         </div>
         <!-- Product actions-->
         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-            <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="#" @onclick="AddToCart">Add to cart</a></div>
+            <div class="text-center">
+                <a class="btn btn-outline-dark mt-auto" href="#" @onclick="AddToCart" @onclick:preventDefault="true">Add to cart</a>
+                @if (!string.IsNullOrWhiteSpace(errorMessage))
+                {
+                    <div class="text-warning small mt-2">@errorMessage</div>
+                }
+            </div>
         </div>
     </div>
 </div>
@@ -36,17 +42,23 @@
    
     [Parameter, Required]
     public Product Product { get; set; } = null!;
+
+    private string? errorMessage;
     
     private async Task AddToCart()
     {
         try
         {
             await Cart.AddToCartAsync(Product.Id);
-            Console.WriteLine("Product added to cart successfully.");
+            errorMessage = null;
+        }
+        catch (UnauthorizedApiException ex)
+        {
+            errorMessage = ex.Message;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Error adding product to cart: {ex.Message}");
+            errorMessage = $"Nie udało się dodać produktu: {ex.Message}";
         }
     }
     

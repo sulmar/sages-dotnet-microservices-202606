@@ -2,6 +2,7 @@
 @using BlazorApp.Services
 @inject HttpClient Http
 @inject IAuthTokenStore TokenStore
+@implements IDisposable
 
 @if (isLoggedIn)
 {
@@ -43,6 +44,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
+        TokenStore.TokenChanged += OnTokenChanged;
         var token = await TokenStore.GetTokenAsync();
         isLoggedIn = !string.IsNullOrWhiteSpace(token);
     }
@@ -86,6 +88,16 @@ else
         errorMessage = null;
     }
 
+    private void OnTokenChanged()
+    {
+        _ = InvokeAsync(async () =>
+        {
+            var token = await TokenStore.GetTokenAsync();
+            isLoggedIn = !string.IsNullOrWhiteSpace(token);
+            StateHasChanged();
+        });
+    }
+
     private static async Task<string> ReadTokenAsync(HttpResponseMessage response)
     {
         try
@@ -96,5 +108,10 @@ else
         {
             return (await response.Content.ReadAsStringAsync()).Trim('"');
         }
+    }
+
+    public void Dispose()
+    {
+        TokenStore.TokenChanged -= OnTokenChanged;
     }
 }

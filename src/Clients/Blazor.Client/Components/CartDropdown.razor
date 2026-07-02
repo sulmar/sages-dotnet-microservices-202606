@@ -17,6 +17,10 @@
         </button>
         <div class="dropdown-menu dropdown-menu-end p-3 shadow"
              style="min-width: 320px; max-height: 420px; overflow-y: auto;">
+            @if (!string.IsNullOrWhiteSpace(errorMessage))
+            {
+                <div class="alert alert-warning py-2 small mb-2">@errorMessage</div>
+            }
             @if (cartItems is null || catalog is null)
             {
                 <span class="text-muted small">Ładowanie...</span>
@@ -46,6 +50,7 @@
     private List<CartLineItem>? cartItems;
     private List<Product>? catalog;
     private bool checkoutBusy;
+    private string? errorMessage;
 
     private int TotalQuantity => cartItems?.Sum(x => x.Quantity) ?? 0;
 
@@ -74,8 +79,16 @@
     }
 
     private async Task RefreshCartAsync()
-    {        
-        cartItems = await Cart.GetCartItemsAsync() ?? [];
+    {
+        try
+        {
+            cartItems = await Cart.GetCartItemsAsync() ?? [];
+        }
+        catch (UnauthorizedApiException ex)
+        {
+            cartItems = [];
+            errorMessage = ex.Message;
+        }
     }
 
     private Product? ResolveProduct(int productId) =>
@@ -86,10 +99,15 @@
         try
         {
             await Cart.RemoveFromCartAsync(productId);
+            errorMessage = null;
+        }
+        catch (UnauthorizedApiException ex)
+        {
+            errorMessage = ex.Message;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Remove from cart error: {ex.Message}");
+            errorMessage = $"Nie udało się usunąć produktu z koszyka: {ex.Message}";
         }
     }
 
@@ -102,10 +120,15 @@
         try
         {
             await Cart.CheckoutAsync();
+            errorMessage = null;
+        }
+        catch (UnauthorizedApiException ex)
+        {
+            errorMessage = ex.Message;
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Checkout error: {ex.Message}");
+            errorMessage = $"Nie udało się złożyć zamówienia: {ex.Message}";
         }
         finally
         {

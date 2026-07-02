@@ -6,6 +6,8 @@ public sealed class LocalStorageAuthTokenStore(IJSRuntime jsRuntime) : IAuthToke
 {
     private const string TokenKey = "access_token";
 
+    public event Action? TokenChanged;
+
     public async ValueTask<string?> GetTokenAsync() =>
         await jsRuntime.InvokeAsync<string?>("localStorage.getItem", TokenKey);
 
@@ -18,8 +20,12 @@ public sealed class LocalStorageAuthTokenStore(IJSRuntime jsRuntime) : IAuthToke
         }
 
         await jsRuntime.InvokeVoidAsync("localStorage.setItem", TokenKey, token);
+        TokenChanged?.Invoke();
     }
 
-    public async ValueTask ClearTokenAsync() =>
+    public async ValueTask ClearTokenAsync()
+    {
         await jsRuntime.InvokeVoidAsync("localStorage.removeItem", TokenKey);
+        TokenChanged?.Invoke();
+    }
 }

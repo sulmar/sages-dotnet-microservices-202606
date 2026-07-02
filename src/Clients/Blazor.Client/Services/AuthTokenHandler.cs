@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using System.Net;
 
 namespace BlazorApp.Services;
 
@@ -13,6 +14,13 @@ public sealed class AuthTokenHandler(IAuthTokenStore tokenStore) : DelegatingHan
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        return await base.SendAsync(request, cancellationToken);
+        var response = await base.SendAsync(request, cancellationToken);
+
+        if (response.StatusCode == HttpStatusCode.Unauthorized)
+        {
+            await tokenStore.ClearTokenAsync();
+        }
+
+        return response;
     }
 }
