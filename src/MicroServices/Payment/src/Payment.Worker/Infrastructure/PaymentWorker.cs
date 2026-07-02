@@ -1,6 +1,6 @@
 ﻿using StackExchange.Redis;
 
-namespace Payment.Worker.Workers;
+namespace Payment.Worker.Infrastructure;
 
 public class PaymentWorker(IConnectionMultiplexer connection) : BackgroundService
 {
@@ -13,6 +13,7 @@ public class PaymentWorker(IConnectionMultiplexer connection) : BackgroundServic
 
         while (!stoppingToken.IsCancellationRequested)
         {
+            // XREAD STREAMS orders-stream 0-0
             var entries = await db.StreamReadAsync(StreamName, lastId);
 
             foreach (var entry in entries)

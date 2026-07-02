@@ -1,9 +1,10 @@
-using Payment.Worker.Workers;
+using Payment.Worker.Infrastructure;
 using StackExchange.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddHostedService<PaymentWorker>();
+
+builder.Services.AddHostedService<GroupPaymentWorker>();
 builder.Services.AddSingleton<IConnectionMultiplexer>(_ => ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("Redis") ?? "localhost:6379"));
 
 var app = builder.Build();
