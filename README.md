@@ -24,6 +24,51 @@ Do rozpoczęcia tego kursu potrzebujesz następujących rzeczy:
 - SignalR
 - Docker
 
+## Struktura projektu
+
+```text
+sages-dotnet-microservices-202606/
+|-- README.md
+|-- docs/
+|   |-- dotnet-cli-cheatsheet.md
+|   `-- use-cases/
+|       |-- README.md
+|       `-- UC-*.md
+`-- src/
+    |-- ApiGateway/
+    |   |-- ManualApiGateway/
+    |   `-- YarpApiGateway/
+    |-- Clients/
+    |   `-- Blazor.Client/
+    |-- IdentityProvider/
+    |   `-- IdentityProvider.Api/
+    `-- MicroServices/
+        |-- Ordering/
+        |   `-- src/
+        |       |-- Ordering.Api/
+        |       |-- Ordering.Application/
+        |       |-- Ordering.Domain/
+        |       `-- Ordering.Infrastructure/
+        |-- Payment/
+        |   `-- src/
+        |       `-- Payment.Worker/
+        |-- ProductCatalog/
+        |   `-- src/
+        |       |-- ProductCatalog.Api/
+        |       |-- ProductCatalog.Application/
+        |       |-- ProductCatalog.Domain/
+        |       `-- ProductCatalog.Infrastructure/
+        |-- ShoppingCart/
+        |   `-- src/
+        |       |-- ShoppingCart.Api/
+        |       |-- ShoppingCart.Application/
+        |       |-- ShoppingCart.Domain/
+        |       `-- ShoppingCart.Infrastructure/
+        `-- Stock/
+            `-- src/
+                `-- Stock.GrpcService/
+```
+
 ## Przygotowanie
 1. Sklonuj repozytorium Git
 ```
